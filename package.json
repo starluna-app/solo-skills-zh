@@ -1,0 +1,29 @@
+{
+  "name": "solo-skills-zh",
+  "version": "1.0.0",
+  "description": "为一人公司和独立开发者打造的开箱即用 AI Skill/Agent 库",
+  "main": "index.js",
+  "bin": {
+    "solo-skills": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starluna-app/solo-skills-zh.git"
+  },
+  "keywords": [
+    "ai",
+    "skill",
+    "mcp",
+    "agent",
+    "solopreneur"
+  ],
+  "author": "StarLuna LLC",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/starluna-app/solo-skills-zh/issues"
+  },
+  "homepage": "https://github.com/starluna-app/solo-skills-zh#readme"
+}
