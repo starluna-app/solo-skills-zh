@@ -65,6 +65,9 @@ npx solo-skills-zh
 | `sl_social-writer` | 将一段核心产品更新转化为 Xiaohongshu、Reddit 等多平台适配文案 | 宣发与社区增长 |
 | `sl_market-research` | 输入一个利基市场(Niche)，自动检索并总结该领域的最新竞品动态 | 早期点子验证 |
 | `sl_auto-pr-merger` | 自动处理、测试并合并 Github Pull Requests 的数字员工 | 开发自动化与集成 |
+| `sl_copywriting-genius` | 应用经典的文案框架（如 AIDA/PAS），将生硬的产品功能点转化为极具说服力的营销文案 | 销售文案与广告创意 |
+| `sl_growth-hack-ideator` | 为零预算的初创项目构思非传统的低成本获客渠道和游击营销策略 | 增长策略与低成本获客 |
+| `sl_brand-voice-architect` | 帮助创始人定义公司的核心价值、使命和性格，生成完整的品牌语调指南 | 品牌建设与内容规范 |
 
 ---
 
