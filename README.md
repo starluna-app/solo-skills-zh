@@ -64,6 +64,7 @@ npx solo-skills
 | `social-writer` | 将一段核心产品更新转化为 Xiaohongshu、Reddit 等多平台适配文案 | 宣发与社区增长 |
 | `market-research` | 输入一个利基市场(Niche)，自动检索并总结该领域的最新竞品动态 | 早期点子验证 |
 | `seo-optimizer` | 分析 Markdown/HTML 内容，提取长尾关键词并优化页面结构 | 流量获取与转化 |
+| `copywriting-genius` | 应用经典的文案框架（如 AIDA/PAS），将生硬的产品功能点转化为极具说服力的营销文案 | 销售文案与广告创意 |
 
 ---
 
