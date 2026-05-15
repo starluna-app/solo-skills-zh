@@ -12,6 +12,7 @@
 * **⚡️ 零配置运行**：无需繁琐的安装，直接通过 `npx` 即可在终端随时唤起。
 * **🌍 中文支持**：所有技能均提供高质量中文（`zh-CN`）版本，适配中文语境下的 AI Agent。
 * **🛠️ 专为独立开发者定制**：聚焦于“一人公司”的高频痛点（产品运营、全栈开发、市场营销、自动化工作流）。
+* **🏷️ 统一前缀**：所有技能均使用 `sl_` 前缀，便于快速检索和调用。
 * **📖 开源友好**：基于 Apache 2.0 协议，自由使用、修改和商用。
 
 ---
@@ -38,7 +39,7 @@
 **安装 / 更新:**
 ```bash
 # 适用于 Gemini CLI
-npx skills add starluna-app/solo-skills/skills/youtube-channel-planner
+npx skills add starluna-app/solo-skills-zh/skills/sl_youtube-channel-planner
 
 # 适用于 Claude Code（安装在项目目录下）
 # 或者手动将 SKILL.md 复制到项目的 .claude/skills/ 目录中。
@@ -50,7 +51,7 @@ npx skills add starluna-app/solo-skills/skills/youtube-channel-planner
 ### 2. 作为独立 CLI 使用 (通过 npx)
 无需全局安装，在任何终端中输入以下命令即可运行：
 ```bash
-npx solo-skills
+npx solo-skills-zh
 ```
 
 
@@ -60,10 +61,10 @@ npx solo-skills
 
 | Skill 命令 | 描述 | 应用场景 |
 | :--- | :--- | :--- |
-| `youtube-channel-planner` | YouTube 频道创建策划 (AI 驱动版)，利用 NotebookLM 构建高信息密度的自动化内容频道 | 创作者经济与自媒体变现 |
-| `social-writer` | 将一段核心产品更新转化为 Xiaohongshu、Reddit 等多平台适配文案 | 宣发与社区增长 |
-| `market-research` | 输入一个利基市场(Niche)，自动检索并总结该领域的最新竞品动态 | 早期点子验证 |
-| `seo-optimizer` | 分析 Markdown/HTML 内容，提取长尾关键词并优化页面结构 | 流量获取与转化 |
+| `sl_youtube-channel-planner` | YouTube 频道创建策划 (AI 驱动版)，利用 NotebookLM 构建高信息密度的自动化内容频道 | 创作者经济与自媒体变现 |
+| `sl_social-writer` | 将一段核心产品更新转化为 Xiaohongshu、Reddit 等多平台适配文案 | 宣发与社区增长 |
+| `sl_market-research` | 输入一个利基市场(Niche)，自动检索并总结该领域的最新竞品动态 | 早期点子验证 |
+| `sl_auto-pr-merger` | 自动处理、测试并合并 Github Pull Requests 的数字员工 | 开发自动化与集成 |
 
 ---
 

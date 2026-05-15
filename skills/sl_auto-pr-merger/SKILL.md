@@ -1,5 +1,5 @@
 ---
-name: auto-pr-merger
+name: sl_auto-pr-merger
 description: 自动拉取开启的 Pull Requests，运行 lint 和 format，在 main 分支上执行 rebase 并尝试解决基本冲突。如果没有发现问题，则自动将其合并到 main 分支。当用户说“合并所有 PR”、“处理 PR”、“自动 rebase 并合并”时触发此技能。
 ---
 # 自动 PR 合并助手 (Auto PR Merger)

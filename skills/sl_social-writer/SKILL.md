@@ -1,5 +1,5 @@
 ---
-name: social-writer
+name: sl_social-writer
 description: 专为独立开发者打造的多平台社交媒体文案写手。通过简短的交互式 QA，帮助用户将核心产品更新或产品发布公告转化为高度定制的、随时可发布的文案，支持平台包括 X (Twitter)、小红书、Reddit、IndieHackers、LinkedIn 等。当用户提到“写社交媒体帖子”、“产品发布文案”、“分享产品更新”、“写个推文”或需要推广其产品时激活。
 ---
 

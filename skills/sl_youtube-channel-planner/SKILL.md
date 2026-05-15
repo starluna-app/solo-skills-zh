@@ -1,5 +1,5 @@
 ---
-name: youtube-channel-planner
+name: sl_youtube-channel-planner
 description: YouTube 频道创建高级策划 (AI 专家版)。通过线性互动式 QA 引导，帮助非专业创作者完成 YouTube 频道的精准定位、品牌包装、自动化内容流水线（NotebookLM）及商业变现设计。当用户提到“创建 YouTube 频道”、“想做博主”、“策划频道”、“YouTube 创业”或需要规划视频平台内容时激活。
 ---
 
