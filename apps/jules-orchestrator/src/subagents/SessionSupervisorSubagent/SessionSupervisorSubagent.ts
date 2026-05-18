@@ -157,13 +157,15 @@ export class SessionSupervisorSubagent implements Subagent<void, SessionOutput> 
   }
 
   private async extractOutput(): Promise<SessionOutput> {
-      // TODO: Call julesClient to get actual outputs
+      const session = await this.skills.julesClient.getSession(this.input.julesSessionId);
+      const outputs = session.outputs || {};
       return {
           taskId: this.input.subtask.id,
           julesSessionId: this.input.julesSessionId,
-          pullRequestUrl: 'https://github.com/mock/repo/pull/1',
-          summary: 'Completed mock task',
-          filesChanged: []
+          pullRequestUrl: outputs.pullRequestUrl,
+          pullRequestTitle: outputs.pullRequestTitle,
+          summary: outputs.summary || 'Session completed successfully',
+          filesChanged: outputs.filesChanged || []
       };
   }
 }
