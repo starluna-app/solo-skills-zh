@@ -9,8 +9,7 @@ class OrchestratorAgent {
     store;
     logger;
     activeSupervisors = new Map();
-    constructor(llm, // TODO: Replace with LLMClient interface
-    skills, subagentFactory, store, // TODO: Replace with StateStore interface
+    constructor(llm, skills, subagentFactory, store, // TODO: Replace with StateStore interface
     logger // TODO: Replace with Logger interface
     ) {
         this.llm = llm;

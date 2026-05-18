@@ -3,12 +3,13 @@ import { ExecutionTracker } from './ExecutionTracker';
 import { SubagentFactory } from '../subagents/common/SubagentFactory';
 import { SessionSupervisorSubagent, SessionOutput } from '../subagents/SessionSupervisorSubagent/SessionSupervisorSubagent';
 import { SubagentResult } from '../subagents/common/Subagent';
+import { LLMClient } from '../llm/LLMClient';
 
 export class OrchestratorAgent {
   private activeSupervisors = new Map<string, SessionSupervisorSubagent>();
 
   constructor(
-    private llm: any, // TODO: Replace with LLMClient interface
+    private llm: LLMClient,
     private skills: {
       taskDecomposition: any;
       dependencyAnalyzer: any;
