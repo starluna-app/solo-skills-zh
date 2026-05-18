@@ -68,6 +68,7 @@ npx solo-skills-zh
 | `sl_copywriting-genius` | 应用经典的文案框架（如 AIDA/PAS），将生硬的产品功能点转化为极具说服力的营销文案 | 销售文案与广告创意 |
 | `sl_growth-hack-ideator` | 为零预算的初创项目构思非传统的低成本获客渠道和游击营销策略 | 增长策略与低成本获客 |
 | `sl_brand-voice-architect` | 帮助创始人定义公司的核心价值、使命和性格，生成完整的品牌语调指南 | 品牌建设与内容规范 |
+| `sl-ios-upload-bg` | iOS 项目图片资源优化，转换 PNG 到 HEIC 格式以减少包体积 | iOS 开发与包体积优化 |
 
 ---
 
