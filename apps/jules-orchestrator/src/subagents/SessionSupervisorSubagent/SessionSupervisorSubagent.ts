@@ -133,7 +133,8 @@ export class SessionSupervisorSubagent implements Subagent<void, SessionOutput> 
     }
 
     // Mock implementation for fetching activities and judging
-    // const activities = await this.skills.julesClient.listActivities(this.input.julesSessionId);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const activities = await this.skills.julesClient.listActivities(this.input.julesSessionId);
     const question = "Mock question from Jules";
     
     // Mock LLM judgment
@@ -144,7 +145,7 @@ export class SessionSupervisorSubagent implements Subagent<void, SessionOutput> 
     };
     
     if (judgment.canAnswer) {
-      // await this.skills.julesClient.sendMessage(this.input.julesSessionId, judgment.answer);
+      await this.skills.julesClient.sendMessage(this.input.julesSessionId, judgment.answer);
       this.logger.info({ event: 'answered_question', answer: judgment.answer });
       return { action: 'CONTINUE' };
     } else {

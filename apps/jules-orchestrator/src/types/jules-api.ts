@@ -17,3 +17,5 @@ export interface JulesSessionCreateParams {
     automationMode: string;
     title: string;
 }
+
+export type JulesActivity = any;
