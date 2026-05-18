@@ -27,7 +27,7 @@
 - **Windsurf**
 - **Aider**
 
-*注：如果您在其他工具中成功使用了本库的技能，欢迎提交 Issue 告诉我们！*
+*注：如果您在其他工具中成功使用了本库的技能，欢迎提交 Issue告诉我们！*
 
 ---
 
@@ -70,6 +70,7 @@ npx solo-skills-zh
 | `sl_brand-voice-architect` | 帮助创始人定义公司的核心价值、使命和性格，生成完整的品牌语调指南 | 品牌建设与内容规范 |
 | `sl-ios-upload-bg` | iOS 项目图片资源优化，转换 PNG 到 HEIC 格式以减少包体积 | iOS 开发与包体积优化 |
 | `sl_karpathy-guidelines` | 基于 Andrej Karpathy 观察的减少常见 LLM 编程错误的指导原则（含扩展） | AI 辅助编程与代码审查 |
+| `sl_founder-social-scout` | 社交媒体洞察与增长黑客，利用 CLI 监控多平台（Twitter/Reddit/XHS 等），发掘真实用户痛点并生成低成本获客策略 | 社交媒体监控与获客 |
 
 ---
 
