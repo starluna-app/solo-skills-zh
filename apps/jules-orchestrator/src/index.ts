@@ -1,5 +1,16 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
+import { OrchestratorAgent } from './agent/OrchestratorAgent';
+import { AnthropicLLMClient } from './llm/AnthropicLLMClient';
+import { SubagentFactory } from './subagents/common/SubagentFactory';
+import { FileStateStore } from './storage/FileStateStore';
+import { logger } from './utils/logger';
+import { DefaultTaskDecompositionSkill } from './skills/task-decomposition';
+import { DefaultDependencyAnalyzerSkill } from './skills/dependency-analyzer';
+import { DefaultPromptEngineeringSkill } from './skills/prompt-engineering';
+import { DefaultJulesApiClient } from './skills/jules-api-client';
+import { DefaultSessionMonitor } from './skills/session-monitor';
+import { UserRequest } from './types/core';
 
 const program = new Command();
 
@@ -20,8 +31,39 @@ program
     console.log(`Starting Orchestrator with prompt: "${prompt}"`);
     console.log('Options:', options);
 
-    // TODO: Initialize OrchestratorAgent with real dependencies and call handleRequest
-    console.log('Not fully implemented yet.');
+    const llm = new AnthropicLLMClient();
+    const skills = {
+      taskDecomposition: new DefaultTaskDecompositionSkill(),
+      dependencyAnalyzer: new DefaultDependencyAnalyzerSkill(),
+      promptEngineering: new DefaultPromptEngineeringSkill(),
+      julesClient: new DefaultJulesApiClient(),
+      sessionMonitor: new DefaultSessionMonitor(),
+    };
+    const subagentFactory = new SubagentFactory(skills, llm, logger);
+    const store = new FileStateStore();
+
+    const agent = new OrchestratorAgent(
+      llm,
+      skills,
+      subagentFactory,
+      store,
+      logger
+    );
+
+    const input: UserRequest = {
+      prompt,
+      repoHint: options.repo,
+      branch: options.branch,
+      requireApproval: options.requireApproval,
+      parallelismHint: options.parallelism,
+    };
+
+    try {
+      const outcome = await agent.handleRequest(input);
+      logger.info({ outcome }, 'Orchestrator finished handling request');
+    } catch (error) {
+      logger.error({ error }, 'Error running orchestrator');
+    }
   });
 
 program
