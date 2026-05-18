@@ -4,6 +4,7 @@ import { SubagentFactory } from '../subagents/common/SubagentFactory';
 import { SessionSupervisorSubagent, SessionOutput } from '../subagents/SessionSupervisorSubagent/SessionSupervisorSubagent';
 import { SubagentResult } from '../subagents/common/Subagent';
 import { LLMClient } from '../llm/LLMClient';
+import { Logger } from '../utils/logger';
 
 export class OrchestratorAgent {
   private activeSupervisors = new Map<string, SessionSupervisorSubagent>();
@@ -19,7 +20,7 @@ export class OrchestratorAgent {
     },
     private subagentFactory: SubagentFactory,
     private store: any, // TODO: Replace with StateStore interface
-    private logger: any // TODO: Replace with Logger interface
+    private logger: Logger
   ) {}
 
   /**
