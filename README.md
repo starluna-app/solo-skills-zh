@@ -68,7 +68,7 @@ npx solo-skills-zh
 | `sl_copywriting-genius` | 应用经典的文案框架（如 AIDA/PAS），将生硬的产品功能点转化为极具说服力的营销文案 | 销售文案与广告创意 |
 | `sl_growth-hack-ideator` | 为零预算的初创项目构思非传统的低成本获客渠道和游击营销策略 | 增长策略与低成本获客 |
 | `sl_brand-voice-architect` | 帮助创始人定义公司的核心价值、使命和性格，生成完整的品牌语调指南 | 品牌建设与内容规范 |
-| `sl-ios-upload-bg` | iOS 项目图片资源优化，转换 PNG 到 HEIC 格式以减少包体积 | iOS 开发与包体积优化 |
+| `sl-ios-asset-prep` | iOS 资源准备工作流：背景图 PNG→HEIC 压缩 + 图标用 rembg/BiRefNet 抠图恢复透明 alpha 通道，自动入 Xcode Asset Catalog | iOS 开发、包体积优化、图标透明度修复 |
 | `sl_karpathy-guidelines` | 基于 Andrej Karpathy 观察的减少常见 LLM 编程错误的指导原则（含扩展） | AI 辅助编程与代码审查 |
 | `sl_founder-social-scout` | 社交媒体洞察与增长黑客，利用 CLI 监控多平台（Twitter/Reddit/XHS 等），发掘真实用户痛点并生成低成本获客策略 | 社交媒体监控与获客 |
 
