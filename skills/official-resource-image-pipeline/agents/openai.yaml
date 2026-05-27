@@ -1,0 +1,4 @@
+interface:
+  display_name: "Official Resource Image Pipeline"
+  short_description: "Create LunaBee official image resources for Supabase"
+  default_prompt: "Use $official-resource-image-pipeline to create a new official resource image. Ask me what content I want, draft one image2 prompt with a LunaBee footer and content-specific slogan for approval, then generate, upload to UAT, update resource metadata, and verify the iOS download flow."
