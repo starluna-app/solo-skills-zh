@@ -195,3 +195,30 @@ asc review details-update --id $DETAIL_ID \
 - ❌ Apple Pay Payment Processing（电商专用，不是 IAP）
 - ❌ Push Notifications（没集成 APNs 别开）
 - ❌ HealthKit, HomeKit, CloudKit 等（没用别开）
+
+---
+
+## 16. Auto-renewable subscription 一直 Missing Metadata，但 UI 里少数国家都有价格
+
+**症状**：
+- `Monetization → Subscriptions → <Subscription>` 显示 `Missing Metadata`
+- Availability 明确只选了 launch countries（例如 USA/CAN/GBR/AUS/NZL）
+- Subscription Prices 也显示这些国家的价格都存在
+- App version 的 `In-App Purchases and Subscriptions` section 不出现，无法 attach 首审订阅
+
+**原因**：首审路径可能要求完整 comparable price table。ASC UI 的可见价格列表只显示当前
+Availability 国家，容易让人以为价格完整；但 Apple submit/review backend 仍可能认为其他
+countries/regions 缺少 price records。
+
+**修复**：
+1. 打开 `Monetization → Subscriptions → <Subscription> → Subscription Prices`
+2. 用目标 base territory/price（例如 United States / $20.00）
+3. 点击 **Recalculate prices for all countries or regions**
+4. 保存/确认 Apple 生成的 comparable prices
+5. 不要改变 Availability；仍然只选 launch countries
+6. 等 subscription 状态变成 **Ready to Submit**
+7. 回到 app version 页面，在 `In-App Purchases and Subscriptions` section 里 attach subscription/group
+
+**不要误修**：
+- 不要去 `Monetization → In-App Purchases` 新建 consumable/non-consumable；自动续期订阅不在那里。
+- 不要把 paywall review screenshot 上传到 `Image (Optional)`。Optional image 是 App Store promotion / offer-code / win-back 用图，不是审核截图。

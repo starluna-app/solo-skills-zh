@@ -580,6 +580,23 @@ asc screenshots upload --app "$APP_ID" --version "1.0" --device IPHONE_69 --dir 
 
 ASC web UI 创建订阅 group、subscription product、价格、本地化、审核截图。CLI 有部分 API（`asc iap ...`, `asc subscriptions ...`），但首次创建建议 web UI。
 
+**Auto-renewable subscription 首审特别注意**：
+
+- `Monetization → In-App Purchases` 为空是正常的；那里只创建 consumable /
+  non-consumable。自动续期订阅在 `Monetization → Subscriptions` 里管理。
+- 必填的是订阅本地化、订阅组本地化、Review Information screenshot、Availability、
+  Subscription Prices。`Image (Optional)` 只是 App Store 推广 / offer-code /
+  win-back 用图，不是 review screenshot；不要为了过审上传假图。
+- 如果订阅 Availability 只选了少数 launch countries，Subscription Prices 页面
+  也可能只显示这些国家的可见价格。但首审时 Apple/ASC 仍可能要求完整 comparable
+  price table。症状是订阅状态一直 `Missing Metadata`，App version 页面也看不到
+  `In-App Purchases and Subscriptions` attach section。
+- 修复：进订阅的 **Subscription Prices**，执行 **Recalculate prices for all
+  countries or regions**，用 base territory/price 生成完整价格表；然后保持
+  Availability 仍然只选 launch countries。状态变成 **Ready to Submit** 后，回到
+  App Store version 页面，在 `In-App Purchases and Subscriptions` 里选择该
+  subscription/group。
+
 ---
 
 ## 阶段 7：Submit for Review（人工确认 + API）
@@ -635,6 +652,9 @@ asc submit status --version-id "$VERSION_ID"
 - ❌ AI 助手有花名（Aries 之类）但实际产品名是别的 → 文案不一致风险
 - ❌ 直接猜 build number → 可能 "CFBundleVersion too low" 被拒，用 `asc builds next-build-number` 代替
 - ❌ IPA 放在 `build/` 而非 `.asc/artifacts/` → 和进度追踪路径不一致，容易混淆
+- ❌ 订阅 Availability 只选少数国家且可见价格都存在，但仍 Missing Metadata
+  → Subscription Prices 里 **Recalculate prices for all countries or regions**；
+  保持 Availability 不变，Ready to Submit 后才能在 app version 里 attach 首审订阅
 
 ---
 
