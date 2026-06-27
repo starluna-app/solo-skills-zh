@@ -72,6 +72,7 @@ npx solo-skills-zh
 | `sl-app-store-screenshot-polisher` | 将原始 iOS 模拟器截图加工成 6.9 英寸 App Store 可上传营销截图，先处理 1 张确认风格，再批量处理 | App Store 截图、截图美化、上架素材 |
 | `sl_karpathy-guidelines` | 基于 Andrej Karpathy 观察的减少常见 LLM 编程错误的指导原则（含扩展） | AI 辅助编程与代码审查 |
 | `sl_founder-social-scout` | 社交媒体洞察与增长黑客，利用 CLI 监控多平台（Twitter/Reddit/XHS 等），发掘真实用户痛点并生成低成本获客策略 | 社交媒体监控与获客 |
+| `sl-local-drive-clean` | 智能识别并清理 macOS 本地存储空间，针对开发者环境（Xcode/Simulators/DerivedData）自动释放冗余文件 | 本地存储清理与优化 |
 
 ---
 
