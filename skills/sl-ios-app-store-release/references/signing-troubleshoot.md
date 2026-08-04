@@ -162,6 +162,36 @@ ASC 邮件说 "The build is invalid" 或具体 issue：
 
 ---
 
+### 症状 G：`errSecInternalComponent` 或多个 embedded framework 的 `CodeSign` 失败
+
+```
+<framework>: errSecInternalComponent
+Command CodeSign failed with a nonzero exit code
+```
+
+**原因**：通常不是 Firebase/gRPC 本身，也不表示 certificate/profile 缺失。`codesign` 找到了 identity，但 macOS login keychain 处于锁定状态或当前执行上下文没有私钥访问权。
+
+**先做这个，且只做一次原样重试**：
+
+```bash
+# 在将运行 archive 的同一个 Terminal 中执行；会要求 macOS 登录密码。
+security unlock-keychain "$HOME/Library/Keychains/login.keychain-db"
+
+# 不修改 project、certificate 或 profile，原样重试 archive。
+```
+
+若 Xcode GUI 与 CLI 都在同样的 framework signing 步骤失败，仍按上面的 keychain 解锁分流；GUI 不是绕过私钥的替代方案。
+
+只有解锁后仍失败，才运行：
+
+```bash
+security find-identity -v -p codesigning
+```
+
+确认 identity、team、profile 对应关系后再讨论修复。不要自动创建、撤销或删除 certificate/profile。
+
+---
+
 ## 干净重建（核选项）
 
 如果各种乱了，按这个顺序重置：

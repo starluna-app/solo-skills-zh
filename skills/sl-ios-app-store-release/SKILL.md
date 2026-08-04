@@ -17,6 +17,20 @@ description: iOS App Store 完整发布流程，从一个 Xcode 项目到提交�
 4. **首次发布的坑统一在这里记**：避免下一次又踩一遍 personal-team vs LLC team、Aries 命名、API key 角色不够等问题。
 5. **每个 release 独立追踪**：每次发版用 `.asc/releases/<version>.md` 单独记录进度。Claude 只读"最新版本"那一份文件，旧版本归档不打扰。
 
+## 内部 TestFlight 快速路径（后续迭代）
+
+内部测试不是完整 App Store 上架。除非用户明确要求 metadata、截图或审核提交，否则只做：**同一上下文预检 → 获取 ASC 安全 build number → archive → export → 上传到内部 TestFlight 群组 → 等待 `VALID`**。
+
+开始前必须运行：
+
+```bash
+bash <skill-path>/scripts/testflight-preflight.sh <MARKETING_VERSION>
+```
+
+这个脚本和后续 `asc` 命令必须在**同一个终端/进程上下文**运行。不要因为 Codex、CI 或另一个 Terminal 无法读取 Keychain 就推断 `.p8` 丢失，也不要先创建新的 API key、证书或 profile。
+
+完整步骤和故障分流见 [references/testflight-internal-release.md](references/testflight-internal-release.md)。
+
 ---
 
 ## 📋 Release 进度追踪机制
@@ -309,6 +323,8 @@ asc xcode version edit --build-number "$NEXT_BUILD" --project <scheme>.xcodeproj
 asc xcode version view --project <scheme>.xcodeproj  # 确认
 ```
 
+若项目使用 XcodeGen、`project.yml` 或 xcconfig 作为 build number 的来源，先找真实 source of truth；不要只修改生成的 `.pbxproj`。
+
 ### 4.4 ExportOptions.plist
 
 ```xml
@@ -350,6 +366,8 @@ asc xcode archive \
   --output json
 ```
 
+执行 agent 工作时，不要直接调用裸 `xcodebuild`；先使用 `xcodebuildmcp` 做项目发现/必要的编译验证，再使用 `asc xcode archive` 产生确定的 release archive。
+
 ### 4.6 Export IPA
 
 ```bash
@@ -365,6 +383,7 @@ asc xcode export \
 - `-authenticationKey*` 可以让 `xcodebuild` 访问 Developer Portal，但 API key 没有 cloud signing 权限时会报 `Cloud signing permission error`。
 - Xcode Apple ID session 不可见或本机没有 distribution identity 时会报 `No Accounts` / `No signing certificate "iOS Distribution" found`。
 - 不要把 archive 失败和 export 签名失败混在一起；archive 成功时，优先修本机 distribution cert/profile。
+- `errSecInternalComponent` 或 embedded-framework `CodeSign` 失败通常是已有私钥无法被 Keychain 使用。先让用户在将执行 release 的终端运行 `security unlock-keychain "$HOME/Library/Keychains/login.keychain-db"`，然后原样重试一次；不要先改证书、profile 或签名配置。
 
 ### 4.6.1 CLI 签名恢复：No Accounts / No iOS Distribution
 
@@ -491,6 +510,8 @@ asc publish testflight \
 ```
 
 完成后即可在 TestFlight 通知到测试人员。**到此结束，不需要继续到阶段 6/7。**
+
+只有看到指定 build 的 `processingState: VALID`（且已加入预期群组）才能报告“TestFlight 就绪”。Xcode Organizer 的 `Uploaded to Apple` 仅表示上传已被 Apple 接收，不表示处理完成。
 
 ---
 
@@ -651,6 +672,9 @@ asc submit status --version-id "$VERSION_ID"
 - ❌ `UIFileSharingEnabled = YES` 而你没用 → 不必要的权限暴露
 - ❌ AI 助手有花名（Aries 之类）但实际产品名是别的 → 文案不一致风险
 - ❌ 直接猜 build number → 可能 "CFBundleVersion too low" 被拒，用 `asc builds next-build-number` 代替
+- ❌ 在一个不可访问 Keychain 的 agent/CI 上看到 `credentials not found` 就重建 API key → 先在**相同执行上下文**运行 `asc auth status` 和 `asc builds next-build-number`；两者必须同时成功
+- ❌ `errSecInternalComponent` 后立刻改 profile/cert → 先解锁 login keychain 并重试原始 archive；只有重试仍失败才检查 identity/profile
+- ❌ 将 `Uploaded to Apple` 当作 TestFlight ready → 继续轮询到 `VALID` 并确认目标 beta group
 - ❌ IPA 放在 `build/` 而非 `.asc/artifacts/` → 和进度追踪路径不一致，容易混淆
 - ❌ 订阅 Availability 只选少数国家且可见价格都存在，但仍 Missing Metadata
   → Subscription Prices 里 **Recalculate prices for all countries or regions**；

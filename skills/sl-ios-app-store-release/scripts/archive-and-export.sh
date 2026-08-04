@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# archive-and-export.sh — Build a signed App Store IPA.
+# archive-and-export.sh — Build a signed App Store IPA with deterministic asc paths.
 #
 # Expects:
-#   .asc/app.env populated (TEAM_ID, BUNDLE_ID, SCHEME, PROJECT)
+#   .asc/app.env populated (TEAM_ID or DEVELOPMENT_TEAM, BUNDLE_ID, SCHEME, PROJECT)
 #   ExportOptions.plist exists at repo root with method=app-store-connect
 
 set -euo pipefail
@@ -11,7 +11,8 @@ ENV_FILE="${ENV_FILE:-.asc/app.env}"
 # shellcheck disable=SC1090
 source "$ENV_FILE"
 
-: "${TEAM_ID:?missing TEAM_ID in $ENV_FILE}"
+TEAM_ID="${TEAM_ID:-${DEVELOPMENT_TEAM:-}}"
+: "${TEAM_ID:?missing TEAM_ID or DEVELOPMENT_TEAM in $ENV_FILE}"
 PROJECT="${PROJECT:-$(ls *.xcodeproj 2>/dev/null | head -1)}"
 SCHEME="${SCHEME:-${PROJECT%.xcodeproj}}"
 
@@ -20,8 +21,8 @@ if [[ -z "$PROJECT" ]]; then
   exit 1
 fi
 
-ARCHIVE_PATH="build/$SCHEME.xcarchive"
-EXPORT_PATH="build/ipa"
+ARCHIVE_PATH="${ARCHIVE_PATH:-.asc/artifacts/$SCHEME.xcarchive}"
+IPA_PATH="${IPA_PATH:-.asc/artifacts/$SCHEME.ipa}"
 EXPORT_OPTIONS="${EXPORT_OPTIONS:-ExportOptions.plist}"
 
 # ---- Sanity checks ----
@@ -71,14 +72,21 @@ fi
 
 # ---- Archive ----
 echo "==> Archiving (this takes 3-10 minutes)"
-rm -rf "$ARCHIVE_PATH" "$EXPORT_PATH"
-xcodebuild -project "$PROJECT" -scheme "$SCHEME" \
-  -configuration Release \
-  -destination 'generic/platform=iOS' \
-  -archivePath "$ARCHIVE_PATH" \
-  DEVELOPMENT_TEAM="$TEAM_ID" \
-  -allowProvisioningUpdates \
-  archive 2>&1 | tail -5
+mkdir -p "$(dirname "$ARCHIVE_PATH")"
+if [[ -e "$ARCHIVE_PATH" || -e "$IPA_PATH" ]]; then
+  echo "Refusing to overwrite existing artifact. Set ARCHIVE_PATH and IPA_PATH to unique release paths."
+  exit 1
+fi
+
+asc xcode archive \
+  --project "$PROJECT" \
+  --scheme "$SCHEME" \
+  --configuration Release \
+  --clean \
+  --archive-path "$ARCHIVE_PATH" \
+  --xcodebuild-flag=-destination \
+  --xcodebuild-flag=generic/platform=iOS \
+  --output json
 
 if [[ ! -d "$ARCHIVE_PATH" ]]; then
   echo "!! archive failed"
@@ -86,7 +94,11 @@ if [[ ! -d "$ARCHIVE_PATH" ]]; then
 fi
 
 # ---- Verify team identifier in the signed binary ----
-APP_PATH="$ARCHIVE_PATH/Products/Applications/$SCHEME.app"
+APP_PATH="$(find "$ARCHIVE_PATH/Products/Applications" -maxdepth 1 -name '*.app' -print -quit)"
+if [[ -z "$APP_PATH" ]]; then
+  echo "!! archive does not contain an app bundle"
+  exit 1
+fi
 echo ""
 echo "==> Verifying signed team identifier"
 SIGNED_TEAM=$(codesign -dv --verbose=4 "$APP_PATH" 2>&1 | awk -F= '/TeamIdentifier/{print $2}')
@@ -99,21 +111,18 @@ fi
 # ---- Export IPA ----
 echo ""
 echo "==> Exporting App Store IPA"
-# NOTE: we deliberately do NOT pass -authenticationKey* args; they require Admin
-# API key role for cloud signing. Without them, xcodebuild uses the local Apple
-# ID session (Xcode must be signed in).
-xcodebuild -exportArchive \
-  -archivePath "$ARCHIVE_PATH" \
-  -exportPath "$EXPORT_PATH" \
-  -exportOptionsPlist "$EXPORT_OPTIONS" \
-  -allowProvisioningUpdates 2>&1 | tail -5
+# Do not pass authenticationKey flags. Use the existing local signing setup.
+asc xcode export \
+  --archive-path "$ARCHIVE_PATH" \
+  --export-options "$EXPORT_OPTIONS" \
+  --ipa-path "$IPA_PATH" \
+  --output json
 
-if ! ls "$EXPORT_PATH"/*.ipa 2>/dev/null; then
+if [[ ! -f "$IPA_PATH" ]]; then
   echo "!! IPA export failed — see references/signing-troubleshoot.md"
   exit 1
 fi
 
-IPA_PATH=$(ls "$EXPORT_PATH"/*.ipa | head -1)
 echo ""
 echo "==> Success"
 echo "IPA: $IPA_PATH"
