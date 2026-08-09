@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS Cache Strategy"
+  short_description: "Design reliable iOS caches from real product patterns"
+  default_prompt: "Use $sl-ios-cache to design or review this iOS feature cache."
