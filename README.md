@@ -73,6 +73,7 @@ npx solo-skills-zh
 | `sl_karpathy-guidelines` | 基于 Andrej Karpathy 观察的减少常见 LLM 编程错误的指导原则（含扩展） | AI 辅助编程与代码审查 |
 | `sl_founder-social-scout` | 社交媒体洞察与增长黑客，利用 CLI 监控多平台（Twitter/Reddit/XHS 等），发掘真实用户痛点并生成低成本获客策略 | 社交媒体监控与获客 |
 | `sl-local-drive-clean` | 智能识别并清理 macOS 本地存储空间，针对开发者环境（Xcode/Simulators/DerivedData）自动释放冗余文件 | 本地存储清理与优化 |
+| `sl-backend-deploy-sync` | 双分支（UAT/PROD）部署同步 Agent，安全校验提交一致性、快进合并并同步推送到 origin/uat 和 origin/main | 多环境同步与发布 |
 
 ---
 
